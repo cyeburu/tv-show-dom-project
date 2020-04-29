@@ -3,43 +3,61 @@ function setup() {
   const allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
 }
-
-//console.log(document.body.style.background = "grey");
-
 function makePageForEpisodes(episodeList) {
+
+  let searchBar = document.createElement("div")
+  document.body.appendChild(searchBar);
+  searchBar.innerHTML = "<input type= 'search' placeholder = 'Live search'>";
+  document.body.insertBefore(searchBar, document.body.childNodes[0]);
   const rootElem = document.getElementById("root");
-  //rootElem.textContent = `Got ${episodeList.length} episode(s)`
 
   for (let i = 0; i < episodeList.length; i++) {
-
     let episodediv = document.createElement("div");
-    rootElem.appendChild(episodediv);
     episodediv.className = "episodeDiv";
 
-    let episodeName = document.createElement("h1");
+    episodeName = document.createElement("h1");
     let episodeImage = document.createElement("img");
     episodeImage.src = episodeList[i].image.medium
-    let episodeSummaryText = document.createElement("p")
+    episodeSummaryText = document.createElement("p")
 
-    episodediv.appendChild(episodeName)
-    episodediv.appendChild(episodeImage)
-    episodediv.appendChild(episodeSummaryText)
+    rootElem.appendChild(episodediv);
+    episodediv.appendChild(episodeName);
+    episodediv.appendChild(episodeImage);
+    episodediv.appendChild(episodeSummaryText);
 
     let seasonNumber = episodeList[i].season.toString().padStart(2, "0")
-    console.log(seasonNumber);
+
     let episodeNumber = episodeList[i].number.toString().padStart(2, "0")
-    console.log(episodeNumber);
+
     let episodeCode = `S${seasonNumber}E${episodeNumber}`
-    console.log(episodeCode);
 
     episodeName.innerHTML = episodeList[i].name + " " + "- " + episodeCode;
-    console.log(episodeName);
 
     episodeImage.innerHTML = episodeList[i].image.medium;
-    console.log(episodeImage);
 
     episodeSummaryText.innerHTML = episodeList[i].summary
-    console.log(episodeSummaryText)
+  }
+
+  searchBar.addEventListener("input", searchFunction)
+  function searchFunction(userInput) {
+    let filter = userInput.target.value.toUpperCase();
+    let searchList = Array.from(document.querySelectorAll(".episodeDiv"));
+    searchList.forEach(show => {
+      let text = show.innerHTML.toUpperCase();
+      if (text.indexOf(filter) != -1) {
+        show.style.display = 'block';
+      } else {
+        show.style.display = 'none';
+      }
+    });
   }
 }
 window.onload = setup;
+
+
+
+
+
+
+
+
