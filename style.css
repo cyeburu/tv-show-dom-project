@@ -23,3 +23,8 @@ img {
 p {
   text-align: justify;
 }
+.select {
+  width: 28%;
+  padding: 5px;
+  margin-left: 10%;
+}
