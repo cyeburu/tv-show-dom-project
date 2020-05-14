@@ -1,24 +1,33 @@
-//You can edit ALL of the code here
+
 function setup() {
+  const allShows = getAllShows();
+  makePageForShows(allShows);
   const allEpisodes = getAllEpisodes();
+  console.log(allEpisodes);
   makePageForEpisodes(allEpisodes);
+  matchEpisodeValue(allEpisodes);
 }
-function makePageForEpisodes(episodeList) {
-  //parent div and child input element
-  let searchBar = document.createElement("div")
+
+let rootElem;
+let searchBar;
+let episodeName;
+function makePageForShows(shows) {
+  searchBar = document.createElement("div")
   document.body.appendChild(searchBar);
-  searchBar.innerHTML = "<input type= 'search' placeholder = 'Live search'>";
   document.body.insertBefore(searchBar, document.body.childNodes[0]);
 
-  const rootElem = document.getElementById("root");
+  let searchInput = document.createElement("input");
+  searchBar.appendChild(searchInput)
+  searchInput.type = 'search';
+  searchInput.placeholder = "Live Search";
+  rootElem = document.getElementById("root");
 
-  for (let i = 0; i < episodeList.length; i++) {
+  for (let i = 0; i < shows.length; i++) {
     let episodediv = document.createElement("div");
     episodediv.className = "episodeDiv";
-
     episodeName = document.createElement("h1");
     let episodeImage = document.createElement("img");
-    episodeImage.src = episodeList[i].image.medium
+    episodeImage.src = shows[i].image.medium
     episodeSummaryText = document.createElement("p")
 
     //append children to parent element
@@ -26,19 +35,11 @@ function makePageForEpisodes(episodeList) {
     episodediv.appendChild(episodeName);
     episodediv.appendChild(episodeImage);
     episodediv.appendChild(episodeSummaryText);
-
-    let seasonNumber = episodeList[i].season.toString().padStart(2, "0")
-    let episodeNumber = episodeList[i].number.toString().padStart(2, "0")
-    let episodeCode = `S${seasonNumber}E${episodeNumber}`
-
-    episodeName.innerHTML = episodeList[i].name + " " + "- " + episodeCode;
-
-    episodeImage.innerHTML = episodeList[i].image.medium;
-
-    episodeSummaryText.innerHTML = episodeList[i].summary
+    episodeName.innerHTML = shows[i].name;
+    episodeSummaryText.innerHTML = shows[i].summary
+    episodeName.innerHTML = shows[i].name;
   }
-  //Live search
-  searchBar.addEventListener("input", searchFunction)
+  searchInput.addEventListener("input", searchFunction)
   function searchFunction(userInput) {
     let filter = userInput.target.value.toUpperCase();
     let searchList = Array.from(document.querySelectorAll(".episodeDiv"));
@@ -51,32 +52,44 @@ function makePageForEpisodes(episodeList) {
       }
     });
   }
-
-  const selectBar = document.createElement("select")
-  selectBar.className = "select";
-  searchBar.appendChild(selectBar)
+  let selectShowBar = document.createElement("select");
+  selectShowBar.className = "select";
+  searchBar.appendChild(selectShowBar);
+  for (let i = 0; i < shows.length; i++) {
+    let name = shows[i].name;
+    let showOption = document.createElement("option");
+    selectShowBar.appendChild(showOption);
+    showOption.innerText = name;
+  }
+}
+function makePageForEpisodes(episodeList) {
+  let selectEpisodeBar = document.createElement("select");
+  selectEpisodeBar.className = "select2";
+  searchBar.appendChild(selectEpisodeBar);
   for (let i = 0; i < episodeList.length; i++) {
     let seasonNumber = episodeList[i].season.toString().padStart(2, "0")
     let episodeNumber = episodeList[i].number.toString().padStart(2, "0")
     let episodeCode = `S${seasonNumber}E${episodeNumber}`
     let name = episodeList[i].name + " " + "- " + episodeCode;
-    //let epicontent = name.split("").reverse().join("");
-    let epicontent = name.split("").join("");
-    //issue -  search box // does not display the correct order, format: "S01E01 - Winter is Coming"
-    console.log(epicontent)
-    let optionContainer = document.createElement("option");
-    selectBar.appendChild(optionContainer);
-    optionContainer.innerText = epicontent;
-    console.log(optionContainer)
+    //let epicontent = name.split("-").reverse().join("");
+    let episodeOption = document.createElement("option");
+    selectEpisodeBar.appendChild(episodeOption);
+    episodeOption.innerText = name;
+  }
+  selectEpisodeBar.addEventListener("change", displaySelect)
+  function displaySelect(selected) {
+    let userSelect = selected.target.value;
+    let selectList = Array.from(document.querySelectorAll(".episodeDiv"))
+    selectList.forEach(element => {
+      let innerHTMLContent = element.innerHTML
+      if (innerHTMLContent.indexOf(userSelect) != -1) {
+        element.style.display = 'block';
+      } else {
+        element.style.display = 'none';
+      }
+    })
   }
 }
 window.onload = setup;
 
-
-
-// Complete all requirements from level 200
-// Add a select input which allows you to jump quickly to an episode:
-// The select input should list all episodes in the format: "S01E01 - Winter is Coming"
-// When the user makes a selection, they should be taken directly to that episode in the list
-// Bonus: if you prefer, when the select is used, ONLY show the selected episode. If you do this, be sure to provide a way for the user to see all episodes again.
 

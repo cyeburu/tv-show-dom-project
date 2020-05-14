@@ -75,7 +75,7 @@ function makePageForEpisodes(episodeList) {
         console.log(optionContainer)
     }
 }
-window.onload = setup;
+window.onload = getTvShowData;
 
 
 
