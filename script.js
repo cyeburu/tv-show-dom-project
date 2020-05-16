@@ -14,7 +14,9 @@ function makePageForShows(shows) {
   document.body.insertBefore(searchBar, document.body.childNodes[0]);
   let searchInput = document.createElement("input");
   searchBar.appendChild(searchInput)
-
+  searchInput.type = 'search';
+  searchInput.placeholder = "Live Search";
+  rootElem = document.getElementById("root");
   for (let i = 0; i < shows.length; i++) {
     let episodediv = document.createElement("div");
     episodediv.className = "episodeDiv";
@@ -58,8 +60,8 @@ function makePageForShows(shows) {
 }
 //get select episode in the other select bar
 function selectShowBarFunciton(event) {
-  let userSel = event.target.value;
-  console.log(userSel)
+  let userInput = event.target.value;
+  console.log(userInput)
   let selectEpisode = document.querySelectorAll(".select2")[0];
   let selectShow = document.querySelector(".select");
   selectShow.forEach(element => {
