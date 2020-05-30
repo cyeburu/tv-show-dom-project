@@ -33,6 +33,12 @@ function makePageForEpisodes(episodeList) {
         episodediv.appendChild(episodeImage);
         episodediv.appendChild(episodeSummaryText);
 
+
+        //padstart (2, "0") the 2 inside the bracket is the character 2 from the left which is replaced by 0 in this case (or whatever no you want it to be)
+        //padstart connects two srings
+        //https://stackoverflow.com/questions/54050227/padstart-is-not-a-function/54050245
+        //There is a simpler way of writing line 40-42 by using one variable - const epiSeasonNumber = ${episode.name} - S0${episode.season}E0${episode.number};
+
         let seasonNumber = episodeList[i].season.toString().padStart(2, "0")
         let episodeNumber = episodeList[i].number.toString().padStart(2, "0")
         let episodeCode = `S${seasonNumber}E${episodeNumber}`
