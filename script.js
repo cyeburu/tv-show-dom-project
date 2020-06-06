@@ -13,25 +13,38 @@ function getTvShowData() {
 function makePageForEpisodes(episodeList) {
   //parent div and child input element
   let searchBar = document.createElement("div")
-  document.body.appendChild(searchBar);
+  searchBar.className = "row"
+
   searchBar.innerHTML = "<input type= 'search' placeholder = 'Live search'>";
   document.body.insertBefore(searchBar, document.body.childNodes[0]);
 
   const rootElem = document.getElementById("root");
+  rootElem.appendChild(searchBar);
+  rootElem.className = "container"
+
+  let divWidth = document.createElement("div")
+  rootElem.appendChild(divWidth)
+
+
+
   const flexDiv = document.createElement("div")
-  rootElem.appendChild(flexDiv)
-  flexDiv.className = "flex-row"
-  const divWidth = document.createElement("div")
-  flexDiv.appendChild(divWidth)
-  divWidth.className = "divWidth";
-  // divWidth.appendChild(episodeDiv)
+
+  flexDiv.className = "flex-row row"
+
+  let flexDiv2 = document.createElement("div")
+  flexDiv2.className = "flexDiv2 lg-col-11";
+
+  divWidth.appendChild(flexDiv2)
+  divWidth.className = "lg-col-12"
+
 
 
 
 
   for (let i = 0; i < episodeList.length; i++) {
     let episodeDiv = document.createElement("div");
-    episodeDiv.className = "episodeDiv";
+    episodeDiv.className = "episodeDiv lg-col-3";
+    flexDiv2.appendChild(episodeDiv)
 
     console.log(episodeDiv)
     episodeName = document.createElement("h1");
@@ -41,10 +54,11 @@ function makePageForEpisodes(episodeList) {
 
     //append children to parent element
     //rootElem.appendChild(episodeDiv);
-    divWidth.appendChild(episodeDiv)
+    flexDiv2.appendChild(episodeDiv)
     episodeDiv.appendChild(episodeName);
     episodeDiv.appendChild(episodeImage);
     episodeDiv.appendChild(episodeSummaryText);
+    episodeImage.className = "col-12"
 
 
     //padstart (2, "0") the 2 inside the bracket is the character 2 from the left which is replaced by 0 in this case (or whatever no you want it to be)
